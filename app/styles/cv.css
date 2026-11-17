@@ -1,0 +1,74 @@
+/* The print-ready CV page and the print rules. */
+
+/* ── Print-ready CV page (CvView.js) ────────────────────────── */
+.cv {
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+.cv:lang(ar) {
+  line-height: 1.8;
+}
+.cv-block {
+  margin-top: 1.7rem;
+}
+.cv-heading {
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-d);
+  font-size: 1.5rem;
+  font-weight: var(--display-weight);
+  line-height: 1.2;
+  break-after: avoid;
+}
+.cv-row {
+  display: grid;
+  grid-template-columns: 9.5rem 1fr;
+  gap: 1rem;
+  margin-top: 0.7rem;
+  break-inside: avoid;
+}
+.cv-list {
+  padding-inline-start: 1.2rem;
+  list-style: disc;
+}
+@media (max-width: 640px) {
+  .cv-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+/* On paper: no navigation, dark ink on white, full width. */
+@media print {
+  :root,
+  :root[data-theme="dark"] {
+    --paper: #fff;
+    --ink: #111;
+    --muted: #444;
+    --line: #bbb;
+    --accent: #1c2f8f;
+    --gilt: #6b5214;
+    --tint: #f1f1f1;
+    --card: #fff;
+  }
+  @page {
+    margin: 14mm;
+  }
+  body {
+    font-size: 10pt;
+  }
+  .site-header,
+  footer,
+  .skip-link,
+  .no-print {
+    display: none !important;
+  }
+  main {
+    padding-bottom: 0;
+  }
+  .wrap {
+    max-width: none;
+    padding-inline: 0;
+  }
+}

@@ -1,0 +1,144 @@
+/* Page defaults and the type scale. */
+
+/* ── Base ───────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 8.5rem;
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-b);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  font-feature-settings: "tnum" 0;
+  overflow-x: clip;
+}
+/* Arabic letters need more room between lines than Latin ones.
+   These rules follow the lang attribute, so an Arabic passage on an English
+   page (and the reverse) is set correctly too. */
+body:lang(ar) {
+  line-height: 1.9;
+}
+@layer base {
+  [lang="ar"] {
+    line-height: 1.9;
+  }
+  [lang="en"] {
+    line-height: 1.65;
+  }
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── Type scale ───────────────────────────────────────────────
+   Display type is Markazi Text. It is compact, so it runs large. */
+.t-hero,
+.t-page,
+.t-h2,
+.t-h3,
+.t-num {
+  font-family: var(--font-d);
+  font-weight: var(--display-weight);
+  text-wrap: balance;
+}
+.t-hero {
+  font-size: clamp(3.9rem, 10.4vw, 8.75rem);
+  line-height: 0.86;
+  letter-spacing: -0.012em;
+}
+.t-page {
+  font-size: clamp(3.4rem, 8vw, 6.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+}
+.t-h2 {
+  font-size: clamp(2.1rem, 4.2vw, 3.1rem);
+  line-height: 1;
+}
+.t-h3 {
+  font-size: clamp(1.6rem, 2.6vw, 2rem);
+  line-height: 1.08;
+}
+.t-num {
+  font-size: clamp(2.6rem, 5vw, 3.9rem);
+  line-height: 0.95;
+  font-variant-numeric: lining-nums;
+}
+.t-lead {
+  font-size: clamp(1.15rem, 1.7vw, 1.35rem);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+.t-meta {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Arabic display type: joined letters and marks need taller lines,
+   and tracking would break the joins. */
+:is(.t-hero, .t-page, .t-h2, .t-h3, .t-num):lang(ar) {
+  letter-spacing: 0;
+}
+.t-hero:lang(ar) {
+  line-height: 1.12;
+}
+.t-page:lang(ar) {
+  line-height: 1.15;
+}
+.t-h2:lang(ar) {
+  line-height: 1.25;
+}
+.t-h3:lang(ar) {
+  line-height: 1.3;
+}
+.t-num:lang(ar) {
+  line-height: 1.1;
+}
+.t-lead:lang(ar) {
+  line-height: 1.85;
+}
+.t-meta:lang(ar) {
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+:lang(ar) {
+  --display-weight: 560;
+}
+:lang(en) {
+  --display-weight: 430;
+}
+
+/* The name in the other script, set against the reading direction. */
+.other-script[lang="ar"] {
+  font-weight: 560;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+.other-script[lang="en"] {
+  font-weight: 430;
+  line-height: 0.9;
+  letter-spacing: -0.012em;
+}
+
+/* Direction arrows point the way the page reads. */
+.flip:dir(rtl) {
+  transform: scaleX(-1);
+}

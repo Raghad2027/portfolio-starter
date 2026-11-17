@@ -1,0 +1,220 @@
+/* Award seals and shelf, talk tickets, patent stamps, the traced signature. */
+
+/* ── Shelf of award seals (SealShelf.js) ────────────────────── */
+.shelf {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 6rem 3.25rem 0;
+  overflow-x: auto;
+  border-bottom: 3px solid var(--ink);
+  scrollbar-width: none;
+}
+.shelf > li {
+  flex: none;
+}
+.seal-pick {
+  position: relative;
+  display: block;
+  width: 5.75rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  perspective: 700px;
+  transform-origin: 50% 100%;
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.seal-pick:hover {
+  transform: translateY(-0.4rem);
+}
+.seal-pick[aria-pressed="true"] {
+  z-index: 5;
+  transform: translateY(-0.9rem) scale(1.85);
+}
+.seal-pick-inner {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.3, 0.9, 0.3, 1);
+}
+/* A seal in the hand is never dimmed by the reader lens. */
+.shelf > li:has([aria-pressed="true"]) {
+  opacity: 1 !important;
+}
+.seal-pick[aria-pressed="true"] .seal-pick-inner {
+  transform: rotateY(180deg);
+}
+.seal-face {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #1c1a10;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgb(0 0 0 / 0.2),
+    inset 0 0 0 5px rgb(255 255 255 / 0.4),
+    inset 0 0 0 6px rgb(0 0 0 / 0.14),
+    0 8px 14px -8px rgb(19 26 43 / 0.5);
+}
+.seal-back {
+  padding: 0.75rem;
+  transform: rotateY(180deg);
+  border: 1px solid var(--gilt);
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 0 8px 14px -8px rgb(19 26 43 / 0.5);
+  font-family: var(--font-d);
+  font-size: 0.62rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* ── Talks as tickets ───────────────────────────────────────── */
+.ticket {
+  --stub: 8.5rem;
+  --notch: 11px;
+  --cut: calc(100% - var(--stub));
+  display: grid;
+  grid-template-columns: 1fr var(--stub);
+  min-height: 12rem;
+  height: 100%;
+  border-radius: 10px;
+  background: var(--card);
+  -webkit-mask:
+    radial-gradient(circle var(--notch) at var(--cut) 0, #0000 97%, #000),
+    radial-gradient(circle var(--notch) at var(--cut) 100%, #0000 97%, #000);
+  -webkit-mask-composite: source-in;
+  mask:
+    radial-gradient(circle var(--notch) at var(--cut) 0, #0000 97%, #000),
+    radial-gradient(circle var(--notch) at var(--cut) 100%, #0000 97%, #000);
+  mask-composite: intersect;
+}
+.ticket:dir(rtl) {
+  --cut: var(--stub);
+}
+.tilt:has(> .ticket),
+.stamp-wrap {
+  filter: drop-shadow(0 1px 0 var(--line)) drop-shadow(0 14px 16px rgb(19 26 43 / 0.13));
+}
+.ticket-body {
+  display: flex;
+  flex-direction: column;
+  padding: 1.4rem 1.5rem;
+}
+.ticket-stub {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.4rem 1rem;
+  text-align: center;
+  background: var(--tint);
+  border-inline-start: 2px dashed color-mix(in srgb, var(--ink) 32%, transparent);
+}
+
+/* ── Patents as postage stamps ──────────────────────────────── */
+.stamp {
+  --s: 18px;
+  height: 100%;
+  padding: 15px;
+  background: var(--card);
+  -webkit-mask:
+    linear-gradient(#000 0 0) center / calc(100% - var(--s)) calc(100% - var(--s)) no-repeat,
+    radial-gradient(circle, #0000 calc(var(--s) * 0.3), #000 calc(var(--s) * 0.32)) calc(var(--s) / -2)
+      calc(var(--s) / -2) / var(--s) var(--s) round;
+  mask:
+    linear-gradient(#000 0 0) center / calc(100% - var(--s)) calc(100% - var(--s)) no-repeat,
+    radial-gradient(circle, #0000 calc(var(--s) * 0.3), #000 calc(var(--s) * 0.32)) calc(var(--s) / -2)
+      calc(var(--s) / -2) / var(--s) var(--s) round;
+}
+.stamp-inner {
+  position: relative;
+  height: 100%;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+.postmark {
+  display: inline-block;
+  padding: 0.3rem 0.95rem;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
+  font-weight: 600;
+  line-height: 1.4;
+  rotate: -7deg;
+}
+.postmark:dir(rtl) {
+  rotate: 7deg;
+}
+
+/* ── Award seals in foil (FoilDriver.js moves the light) ────── */
+:root {
+  --foil-x: 50%;
+  --foil-y: 50%;
+  --foil-turn: 0turn;
+}
+.foil {
+  background:
+    radial-gradient(circle at var(--foil-x) var(--foil-y), rgb(255 255 255 / 0.9), rgb(255 255 255 / 0) 60%),
+    conic-gradient(from var(--foil-turn), #c59835, #f5e6ad, #9db1ff, #f0c5e6, #99e2cd, #f5e6ad, #c59835);
+  background-blend-mode: soft-light, normal;
+}
+.seal {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 5.25rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: #1c1a10;
+  box-shadow:
+    inset 0 0 0 1px rgb(0 0 0 / 0.2),
+    inset 0 0 0 5px rgb(255 255 255 / 0.4),
+    inset 0 0 0 6px rgb(0 0 0 / 0.14),
+    0 8px 14px -8px rgb(19 26 43 / 0.5);
+}
+.seal-year {
+  font-family: var(--font-d);
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ── The name, traced then inked (Signature.js) ─────────────── */
+.signature {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.signature path {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 14;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.signature[data-state="waiting"] path,
+.signature[data-state="drawn"] path {
+  fill: transparent;
+  stroke-dashoffset: 1;
+}
+.signature[data-state="drawn"] path {
+  animation:
+    sig-trace 1s ease forwards calc(var(--i) * 120ms),
+    sig-ink 0.5s ease forwards calc(var(--i) * 120ms + 0.8s);
+}
+@keyframes sig-trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes sig-ink {
+  to {
+    fill: currentColor;
+  }
+}

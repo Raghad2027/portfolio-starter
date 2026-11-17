@@ -1,0 +1,86 @@
+/* Page transitions, the language page-turn, and reduced-motion rules. */
+
+/* ── Page transitions ───────────────────────────────────────────
+   The old page leaves and the new one arrives along the reading
+   direction: left to right in English, right to left in Arabic.
+   The header keeps its own layer, so it stays still.               */
+@view-transition {
+  navigation: auto;
+}
+.site-header {
+  view-transition-name: site-header;
+}
+::view-transition-old(root) {
+  animation: page-out 0.22s ease-in both;
+}
+::view-transition-new(root) {
+  animation: page-in 0.36s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--page-shift) * -1));
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--page-shift));
+  }
+}
+:root {
+  --page-shift: 36px;
+}
+:root[dir="rtl"] {
+  --page-shift: -36px;
+}
+
+/* Switching language turns the whole page over like a sheet of paper
+   (lib/turn.js sets html[data-turn] to the language being opened). */
+html[data-turn] .site-header {
+  view-transition-name: none;
+}
+html[data-turn="ar"] {
+  --turn: -90deg;
+}
+html[data-turn="en"] {
+  --turn: 90deg;
+}
+html[data-turn]::view-transition-old(root) {
+  animation: turn-out 0.32s ease-in both;
+}
+html[data-turn]::view-transition-new(root) {
+  animation: turn-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) 0.32s both;
+}
+@keyframes turn-out {
+  to {
+    opacity: 0.25;
+    transform: perspective(1800px) rotateY(var(--turn));
+  }
+}
+@keyframes turn-in {
+  from {
+    opacity: 0.25;
+    transform: perspective(1800px) rotateY(calc(var(--turn) * -1));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+  }
+  .tilt > * {
+    transform: none;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

@@ -1,16 +1,15 @@
 @import "tailwindcss";
 
-/* TODO: define your own colors here and use them as Tailwind classes,
-   e.g. --color-brand: #2f5bd9;  ->  className="text-brand bg-brand" */
-@theme {
-  --color-brand: #2f5bd9;
-}
+/* The site's own styles, one file per area. */
+@import "./styles/theme.css";
+@import "./styles/base.css";
+@import "./styles/controls.css";
+@import "./styles/hero.css";
+@import "./styles/projects.css";
+@import "./styles/experience.css";
+@import "./styles/recognition.css";
+@import "./styles/cv.css";
+@import "./styles/motion.css";
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: #ffffff;
-  color: #171717;
-}
+/* Dark styles apply when <html data-theme="dark">. ThemeToggle sets it. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));

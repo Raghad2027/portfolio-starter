@@ -1,0 +1,67 @@
+/* Colors. Every component uses these variables, so a theme is just a different set of values. */
+
+/* ── Theme ────────────────────────────────────────────────────
+   Lapis and gilt, the two inks of an illuminated manuscript,
+   on cool paper. Each color is a variable, so dark mode only
+   swaps the values below and every component follows.          */
+:root {
+  --paper: #f4f5f0;
+  --ink: #131a2b;
+  --muted: #535b6e;
+  --line: #d3d6cd;
+  --accent: #2438a8;
+  --gilt: #84651a;
+  --tint: #e7e9f3;
+  --card: #fdfdfb;
+
+  /* The two scripts need different weights to look equally dark. */
+  --display-weight: 430;
+  --font-d: var(--f-display), var(--f-ar-display, Georgia), Georgia, serif;
+  --font-b: var(--f-body), var(--f-ar-body, system-ui), system-ui, sans-serif;
+}
+
+:root[data-theme="dark"] {
+  --paper: #0e1322;
+  --ink: #ecedf2;
+  --muted: #a6acbd;
+  --line: #2b3250;
+  --accent: #a3b4ff;
+  --gilt: #d9b660;
+  --tint: #182040;
+  --card: #151c33;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-gilt: var(--gilt);
+  --color-tint: var(--tint);
+  --color-card: var(--card);
+  --font-display: var(--font-d);
+  --font-sans: var(--font-b);
+}
+
+/* A band in the opposite colors. Everything inside follows, because the
+   components only ever use the variables. */
+.band-ink {
+  --paper: #131a2b;
+  --ink: #f1f2ee;
+  --muted: #b2b8c8;
+  --line: #333b57;
+  --accent: #a9b8ff;
+  --gilt: #dcba66;
+  --tint: #1e2747;
+  --card: #1b2342;
+  background: var(--paper);
+  color: var(--ink);
+}
+:root[data-theme="dark"] .band-ink {
+  --paper: #161d36;
+  --line: #333c5e;
+}
+.band-tint {
+  background: var(--tint);
+}

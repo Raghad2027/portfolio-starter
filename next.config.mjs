@@ -11,6 +11,10 @@ const nextConfig = {
   images: {
     unoptimized: true, // GitHub Pages has no server to optimize images
   },
+  experimental: {
+    // Lets app/global-not-found.js style the 404 page for any unknown URL.
+    globalNotFound: true,
+  },
   turbopack: {
     rules: {
       "*.css": {

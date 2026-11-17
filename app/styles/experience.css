@@ -1,0 +1,112 @@
+/* Experience page: linked timeline, the 60-second tour, the career ladder. */
+
+/* ── Timeline bars linked to their roles (LinkedHover.js) ───── */
+.tl-bar[data-hot] {
+  outline: 2px solid var(--gilt);
+  outline-offset: 2px;
+}
+.role-row {
+  transition: background-color 0.2s;
+}
+.role-row[data-hot] {
+  background: var(--tint);
+  box-shadow:
+    -1rem 0 0 var(--tint),
+    1rem 0 0 var(--tint);
+}
+
+/* ── "16 years in 60 seconds" (CareerTour.js) ───────────────── */
+.tour-arrow {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  transition: border-color 0.15s;
+}
+.tour-arrow:hover:not(:disabled) {
+  border-color: var(--ink);
+}
+.tour-arrow:disabled {
+  opacity: 0.35;
+}
+.tour-seg {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--line);
+}
+.tour-seg:is([data-state="done"], [data-state="current"]) {
+  background: var(--accent);
+}
+.tour-seg[data-state="playing"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: left;
+  animation: seg-fill 5s linear both;
+}
+.tour-seg[data-state="playing"]:dir(rtl)::after {
+  transform-origin: right;
+}
+@keyframes seg-fill {
+  from {
+    transform: scaleX(0);
+  }
+}
+.tour-card {
+  animation: card-in 0.35s ease both;
+}
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ── Career ladder (CareerLadder.js) ────────────────────────────
+   Phone: steps indented a little more each time.
+   Desktop: a real staircase, each column taller than the last.     */
+.ladder {
+  display: grid;
+  gap: 0.6rem;
+}
+.ladder > li {
+  margin-inline-start: calc(var(--i) * 4.5%);
+  padding-inline-start: 1rem;
+  border-inline-start: 3px solid var(--accent);
+}
+.ladder-step {
+  display: block;
+  padding-block: 0.4rem;
+}
+.ladder-step:hover .font-semibold {
+  color: var(--accent);
+}
+@media (min-width: 1024px) {
+  .ladder {
+    grid-template-columns: repeat(var(--steps), minmax(0, 1fr));
+    align-items: end;
+    gap: 0;
+  }
+  .ladder > li {
+    display: flex;
+    min-height: calc(13rem + var(--i) * 2.2rem);
+    margin: 0;
+    padding: 0;
+    border-inline-start: 0;
+    border-top: 3px solid var(--accent);
+    background: linear-gradient(var(--tint), transparent 80%);
+  }
+  .ladder > li + li {
+    border-inline-start: 1px solid var(--line);
+  }
+  .ladder-step {
+    width: 100%;
+    padding: 0.9rem 0.85rem 1rem;
+  }
+}
